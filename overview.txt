@@ -1,0 +1,38 @@
+to-do
+==========
+
+[ ] Talk with base legal about any legalities
+    - Question: What specific Department of Defense (DoD) and Air Force regulations should I be aware of that pertain to developing and distributing an app like this?
+    - Question: Are there any restrictions on service members developing software for use by other service members?
+
+[ ] Verify existance of AADD on base
+[ ] Speak with Moguin about innovation cell, see if they can provide anything
+
+technicals
+==========
+[ ] figure out an email service delivery method
+[ ] get an overview of what the app will look like
+
+COAs for map
+vvvvvvvvvvvvvv
+
+other potentially useful links
+- https://www.geofabrik.de/data/
+
+!!map!!
+coa 0
+- https://map.project-osrm.org/?
+
+coa 1
+- use google maps (free) w/o cloud-based styling or data-driven styling (???)
+- use traveltime to compute eta
+
+coa 2
+- possibly OpenStreetMaps implementation for showing "my location" and car location
+- using traveltime to calculate eta
+
+coa 3
+- use google maps, set "my location" marker and "car location" marker
+- use google map's "compute routes" api (10000 calls = $50)
+
+^^^^^^^^^^^^^^^^^
