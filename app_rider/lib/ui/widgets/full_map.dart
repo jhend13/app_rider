@@ -9,15 +9,29 @@ class FullMap extends StatefulWidget {
   State createState() => FullMapState();
 }
 
-class FullMapState extends State<FullMap> {
+class FullMapState extends State<FullMap> with WidgetsBindingObserver {
   MapboxMap? mapboxMap;
   LocationService locationService = LocationService();
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     String accessToken = const String.fromEnvironment("ACCESS_TOKEN");
     MapboxOptions.setAccessToken(accessToken);
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   _onMapCreated(MapboxMap mapboxMap) {
@@ -28,8 +42,14 @@ class FullMapState extends State<FullMap> {
 
   @override
   Widget build(BuildContext context) {
+    var isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    mapboxMap?.style.setStyleURI(
+        (isDarkMode) ? MapboxStyles.DARK : MapboxStyles.MAPBOX_STREETS);
+
     return Expanded(
         child: MapWidget(
+      styleUri: (isDarkMode) ? MapboxStyles.DARK : MapboxStyles.MAPBOX_STREETS,
       cameraOptions: CameraOptions(
           zoom: 10,
           center: Point(coordinates: Position(-117.42503, 47.659016))),
