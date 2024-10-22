@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+
 import 'ui/pages/home_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const App());
 }
 
@@ -11,6 +18,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final providers = [EmailAuthProvider()];
+
     return MaterialApp(
       title: 'Flutter Demo',
       darkTheme: ThemeData(
@@ -22,7 +31,21 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white70),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      initialRoute:
+          FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/home',
+      routes: {
+        '/sign-in': (context) {
+          return SignInScreen(
+            providers: providers,
+            actions: [
+              AuthStateChangeAction<SignedIn>((context, state) {
+                Navigator.pushReplacementNamed(context, '/home');
+              }),
+            ],
+          );
+        },
+        '/home': (context) => const HomePage(),
+      },
     );
   }
 }

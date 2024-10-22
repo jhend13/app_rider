@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "583487293943",
+    "project_id": "aadd-be709",
+    "storage_bucket": "aadd-be709.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583487293943:android:de0e0011b535aa00d506f2",
+        "android_client_info": {
+          "package_name": "com.example.app_rider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583487293943-plct88o5kq59gotifti47tnp45qtmfqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4vWLInQqNamMvq7qrW3c3X0XvPliCOLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583487293943-plct88o5kq59gotifti47tnp45qtmfqk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
