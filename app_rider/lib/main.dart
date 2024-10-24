@@ -1,3 +1,4 @@
+import 'package:app_rider/ui/pages/registration.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
@@ -21,8 +22,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     //final providers = [EmailAuthProvider()];
 
-    //FirebaseAuth.instance.signOut();
-
     return SafeArea(
         child: MaterialApp(
       title: 'Flutter Demo',
@@ -30,10 +29,10 @@ class App extends StatelessWidget {
         useMaterial3: true,
         brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
-            brightness: Brightness.dark, seedColor: Color(0x415f91)),
+            brightness: Brightness.dark, seedColor: const Color(0x415f91)),
       ),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0x415f91)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x415f91)),
         useMaterial3: true,
       ),
       initialRoute:
@@ -41,6 +40,7 @@ class App extends StatelessWidget {
       routes: {
         '/': (context) => const HomePage(),
         '/sign-in': (context) => const SignInPage(),
+        '/sign-up': (context) => const RegistrationPage()
       },
     ));
   }
