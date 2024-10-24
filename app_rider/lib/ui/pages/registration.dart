@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:app_rider/services/auth.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -17,6 +18,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   final TapGestureRecognizer _tapRecognizer = TapGestureRecognizer();
 
+  bool requestWaiting = false;
+
   @override
   void dispose() {
     _tapRecognizer.dispose();
@@ -25,6 +28,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -46,7 +51,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Create Account',
-                          style: Theme.of(context).textTheme.displaySmall),
+                          style: theme.textTheme.displaySmall),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 24),
                         child: Text('Sign in to start using AADD services.'),
@@ -58,10 +63,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         decoration: InputDecoration(
                             filled: true,
                             label: Text('Email'),
-                            labelStyle: Theme.of(context).textTheme.labelMedium,
+                            labelStyle: theme.textTheme.labelMedium,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.surface,
+                                color: theme.colorScheme.surface,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(12),
@@ -77,7 +82,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           }
                           return null;
                         },
-                        //style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                        //style: TextStyle(color: theme.colorScheme.onPrimary),
                       ),
                       SizedBox(width: 0, height: 12),
                       TextFormField(
@@ -87,15 +92,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         decoration: InputDecoration(
                             filled: true,
                             label: Text('Password'),
-                            labelStyle: Theme.of(context).textTheme.labelMedium,
+                            labelStyle: theme.textTheme.labelMedium,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.surface,
+                                color: theme.colorScheme.surface,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(12),
                             )),
-                        //style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                        //style: TextStyle(color: theme.colorScheme.onPrimary),
                         controller: _password,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -112,15 +117,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         decoration: InputDecoration(
                             filled: true,
                             label: Text('Confirm Password'),
-                            labelStyle: Theme.of(context).textTheme.labelMedium,
+                            labelStyle: theme.textTheme.labelMedium,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.surface,
+                                color: theme.colorScheme.surface,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(12),
                             )),
-                        //style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                        //style: TextStyle(color: theme.colorScheme.onPrimary),
                         controller: _confirmPassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -136,21 +141,49 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       Container(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {}
-                          },
-                          child: Text('Create Account'),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              foregroundColor:
-                                  Theme.of(context).colorScheme.onPrimary),
-                        ),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  requestWaiting = true;
+                                });
+                                AuthResult result = await AuthService
+                                    .createUserWithEmailAndPassword(
+                                        _email.text, _password.text);
+                                if (!result.isSuccess) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        result.message,
+                                        style: TextStyle(
+                                            color: theme.colorScheme.onError),
+                                      ),
+                                      backgroundColor: theme.colorScheme.error,
+                                    ),
+                                  );
+                                }
+
+                                setState(() {
+                                  requestWaiting = false;
+                                });
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: theme.colorScheme.primary,
+                                foregroundColor: theme.colorScheme.onPrimary),
+                            child: requestWaiting
+                                ? SizedBox(
+                                    width: 25,
+                                    height: 25,
+                                    child: CircularProgressIndicator(
+                                      color: theme.colorScheme.onSecondary,
+                                      strokeWidth: 2,
+                                    ))
+                                : Text('Create Account')),
                       ),
                       SizedBox(width: 0, height: 20),
                       RichText(
                         text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyLarge,
+                            style: theme.textTheme.bodyLarge,
                             children: [
                               TextSpan(text: 'Already have an account? '),
                               TextSpan(
@@ -162,8 +195,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                     //Navigator.pushNamed(context, '/sign-in');
                                   },
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
+                                    color: theme.colorScheme.tertiary,
                                     fontWeight: FontWeight.w600),
                               )
                             ]),

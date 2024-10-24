@@ -17,6 +17,8 @@ class _SignInPageState extends State<SignInPage> {
 
   final TapGestureRecognizer _tapRecognizer = TapGestureRecognizer();
 
+  bool requestWaiting = false;
+
   @override
   void dispose() {
     _tapRecognizer.dispose();
@@ -25,6 +27,8 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -52,10 +56,10 @@ class _SignInPageState extends State<SignInPage> {
                         decoration: InputDecoration(
                             filled: true,
                             label: Text('Email'),
-                            labelStyle: Theme.of(context).textTheme.labelMedium,
+                            labelStyle: theme.textTheme.labelMedium,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.surface,
+                                color: theme.colorScheme.surface,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(12),
@@ -71,7 +75,7 @@ class _SignInPageState extends State<SignInPage> {
                           }
                           return null;
                         },
-                        //style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                        //style: TextStyle(color: theme.colorScheme.onPrimary),
                       ),
                       SizedBox(width: 0, height: 12),
                       TextFormField(
@@ -81,15 +85,15 @@ class _SignInPageState extends State<SignInPage> {
                         decoration: InputDecoration(
                             filled: true,
                             label: Text('Password'),
-                            labelStyle: Theme.of(context).textTheme.labelMedium,
+                            labelStyle: theme.textTheme.labelMedium,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.surface,
+                                color: theme.colorScheme.surface,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(12),
                             )),
-                        //style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                        //style: TextStyle(color: theme.colorScheme.onPrimary),
                         controller: _password,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -104,6 +108,9 @@ class _SignInPageState extends State<SignInPage> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                requestWaiting = true;
+                              });
                               AuthResult result =
                                   await AuthService.signInWithEmailAndPassword(
                                       _email.text, _password.text);
@@ -113,29 +120,35 @@ class _SignInPageState extends State<SignInPage> {
                                     content: Text(
                                       result.message,
                                       style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onError),
+                                          color: theme.colorScheme.onError),
                                     ),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.error,
+                                    backgroundColor: theme.colorScheme.error,
                                   ),
                                 );
                               }
+                              setState(() {
+                                requestWaiting = false;
+                              });
                             }
                           },
-                          child: Text('Sign In'),
+                          child: requestWaiting
+                              ? SizedBox(
+                                  width: 25,
+                                  height: 25,
+                                  child: CircularProgressIndicator(
+                                    color: theme.colorScheme.onSecondary,
+                                    strokeWidth: 2,
+                                  ))
+                              : Text('Create Account'),
                           style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              foregroundColor:
-                                  Theme.of(context).colorScheme.onPrimary),
+                              backgroundColor: theme.colorScheme.primary,
+                              foregroundColor: theme.colorScheme.onPrimary),
                         ),
                       ),
                       SizedBox(width: 0, height: 20),
                       RichText(
                         text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyLarge,
+                            style: theme.textTheme.bodyLarge,
                             children: [
                               TextSpan(text: 'Don\'t have an account? '),
                               TextSpan(
@@ -146,8 +159,7 @@ class _SignInPageState extends State<SignInPage> {
                                         context, '/sign-up');
                                   },
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
+                                    color: theme.colorScheme.tertiary,
                                     fontWeight: FontWeight.w600),
                               )
                             ]),
