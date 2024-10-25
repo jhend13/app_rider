@@ -1,13 +1,14 @@
 import 'package:app_rider/ui/pages/registration.dart';
 import 'package:flutter/material.dart';
 
-import 'firebase_options.dart';
+import 'config/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
-import 'ui/pages/home_page.dart';
-import 'ui/pages/sign_in.dart';
+import 'package:app_rider/router/auth_guard.dart';
+
+import 'package:app_rider/ui/pages/home_page.dart';
+import 'package:app_rider/ui/pages/sign_in.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,10 +36,10 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x415f91)),
         useMaterial3: true,
       ),
-      initialRoute:
-          FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/',
+      initialRoute: '/',
       routes: {
-        '/': (context) => const HomePage(),
+        '/': (context) => const AuthGuard(),
+        '/home': (context) => const HomePage(),
         '/sign-in': (context) => const SignInPage(),
         '/sign-up': (context) => const RegistrationPage()
       },

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthResult {
@@ -8,6 +9,8 @@ class AuthResult {
 }
 
 class AuthService {
+  //final FirebaseAuth _fbInstance = FirebaseAuth.instance;
+
   static Future<AuthResult> createUserWithEmailAndPassword(
       email, password) async {
     bool isSuccess = false;

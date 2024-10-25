@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:app_rider/config/constants.dart' as constants;
 import 'package:app_rider/ui/widgets/full_map.dart';
-import 'dart:async';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,21 +15,22 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(milliseconds: 50), (Timer timer) {
-      setState(() => counter++);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(constants.appName),
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [Text('hey')],
+        ),
+      ),
       body: Column(
         children: [FullMap()],
       ),
-      bottomNavigationBar: BottomNavigationBar(items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.abc_sharp), label: 'home'),
-        BottomNavigationBarItem(icon: Icon(Icons.abc_sharp), label: 'yo')
-      ]),
     );
   }
 }
