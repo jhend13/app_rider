@@ -35,13 +35,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(),
-        bottomNavigationBar: NavigationBar(destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'home'),
-          NavigationDestination(icon: Icon(Icons.home), label: 'home'),
-          NavigationDestination(icon: Icon(Icons.home), label: 'home'),
-          NavigationDestination(icon: Icon(Icons.home), label: 'home'),
-        ]),
         body: Padding(
             padding: EdgeInsets.all(32),
             child: SingleChildScrollView(
@@ -76,10 +69,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your email';
                           }
-                          if (!RegExp(r'^[a-zA-Z0-9._%+-]+@us\.af\.mil$')
-                              .hasMatch(value)) {
-                            return 'Please enter a valid email';
-                          }
+                          // if (!RegExp(r'^[a-zA-Z0-9._%+-]+@us\.af\.mil$')
+                          //     .hasMatch(value)) {
+                          //   return 'Please enter a valid email';
+                          // }
                           return null;
                         },
                         //style: TextStyle(color: theme.colorScheme.onPrimary),
@@ -160,11 +153,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                       backgroundColor: theme.colorScheme.error,
                                     ),
                                   );
-                                }
 
-                                setState(() {
-                                  requestWaiting = false;
-                                });
+                                  // setState must be within this code block
+                                  // if sign in is successful, setState will try to call but the widget
+                                  // after auth_guard router has already switched the active page.
+                                  setState(() {
+                                    requestWaiting = false;
+                                  });
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(

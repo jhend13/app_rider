@@ -34,7 +34,6 @@ class _SignInPageState extends State<SignInPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(),
         body: Padding(
             padding: EdgeInsets.all(32),
             child: SingleChildScrollView(
@@ -69,10 +68,10 @@ class _SignInPageState extends State<SignInPage> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your email';
                           }
-                          if (!RegExp(r'^[a-zA-Z0-9._%+-]+@us\.af\.mil$')
-                              .hasMatch(value)) {
-                            return 'Please enter a valid email';
-                          }
+                          // if (!RegExp(r'^[a-zA-Z0-9._%+-]+@us\.af\.mil$')
+                          //     .hasMatch(value)) {
+                          //   return 'Please enter a valid email';
+                          // }
                           return null;
                         },
                         //style: TextStyle(color: theme.colorScheme.onPrimary),
@@ -125,10 +124,14 @@ class _SignInPageState extends State<SignInPage> {
                                     backgroundColor: theme.colorScheme.error,
                                   ),
                                 );
+
+                                // setState must be within this code block
+                                // if sign in is successful, setState will try to call but the widget
+                                // after auth_guard router has already switched the active page.
+                                setState(() {
+                                  requestWaiting = false;
+                                });
                               }
-                              setState(() {
-                                requestWaiting = false;
-                              });
                             }
                           },
                           child: requestWaiting
@@ -139,7 +142,7 @@ class _SignInPageState extends State<SignInPage> {
                                     color: theme.colorScheme.onSecondary,
                                     strokeWidth: 2,
                                   ))
-                              : Text('Create Account'),
+                              : Text('Sign In'),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: theme.colorScheme.primary,
                               foregroundColor: theme.colorScheme.onPrimary),

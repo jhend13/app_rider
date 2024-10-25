@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:app_rider/config/constants.dart' as constants;
 import 'package:app_rider/ui/widgets/full_map.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -25,7 +27,13 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: Drawer(
         child: Column(
-          children: [Text('hey')],
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                },
+                child: Text('Sign out'))
+          ],
         ),
       ),
       body: Column(
