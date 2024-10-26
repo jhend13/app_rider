@@ -1,3 +1,4 @@
+import 'package:app_rider/ui/pages/sign_in.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/services/auth.dart';
@@ -186,8 +187,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 text: 'Sign in',
                                 recognizer: _tapRecognizer
                                   ..onTap = () {
-                                    Navigator.pushReplacementNamed(
-                                        context, '/sign-in');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignInPage()),
+                                    );
                                     //Navigator.pushNamed(context, '/sign-in');
                                   },
                                 style: TextStyle(

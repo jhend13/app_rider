@@ -1,3 +1,4 @@
+import 'package:app_rider/ui/pages/registration.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/services/auth.dart';
@@ -158,8 +159,12 @@ class _SignInPageState extends State<SignInPage> {
                                 text: 'Create account',
                                 recognizer: _tapRecognizer
                                   ..onTap = () {
-                                    Navigator.pushReplacementNamed(
-                                        context, '/sign-up');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RegistrationPage()),
+                                    );
                                   },
                                 style: TextStyle(
                                     color: theme.colorScheme.tertiary,
