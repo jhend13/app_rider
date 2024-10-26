@@ -24,17 +24,13 @@ class _AuthGuardState extends State<AuthGuard> {
     super.initState();
     _authStream = FirebaseAuth.instance.authStateChanges().listen((data) {
       userData = data;
-      print('firebase userData');
-      print(userData);
       // when the auth state is changed, we want to clear the nav stack
       // and return to the root path '/' (AuthGuard)
       // otherwise if a route has been pushed, AuthGuard will rebuild up the stack
       // but the pushed route will continue to show.
       // returning true in popUntil does not produce any effects
       main.navigatorKey.currentState?.popUntil((route) {
-        print('firebase authguard ${route.settings.name} == /');
         if (route.settings.name == '/') {
-          print('firebase authguard hit root route /');
           return true;
         }
         return false;
@@ -51,7 +47,6 @@ class _AuthGuardState extends State<AuthGuard> {
 
   @override
   Widget build(BuildContext context) {
-    print('firebase authguard building....');
     if (userData == null) {
       return const SignInPage();
     }
