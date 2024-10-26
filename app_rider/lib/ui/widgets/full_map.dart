@@ -51,7 +51,7 @@ class FullMapState extends State<FullMap> with WidgetsBindingObserver {
         child: MapWidget(
       styleUri: (isDarkMode) ? MapboxStyles.DARK : MapboxStyles.MAPBOX_STREETS,
       cameraOptions: CameraOptions(
-          zoom: 10,
+          zoom: 13,
           center: Point(coordinates: Position(-117.42503, 47.659016))),
       key: ValueKey('mapWidget'),
       onMapCreated: _onMapCreated,

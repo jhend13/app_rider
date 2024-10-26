@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:app_rider/config/constants.dart' as constants;
 import 'package:app_rider/ui/widgets/full_map.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:provider/provider.dart';
+import 'package:app_rider/models/user.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,15 +24,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(constants.appName),
-      ),
+      appBar: AppBar(),
       drawer: Drawer(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Consumer<User>(builder: (_, user, __) {
+              String? email = user.email;
+              return Text('Welcome $email');
+            }),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.tertiary,
+                    foregroundColor: Theme.of(context).colorScheme.onTertiary),
                 onPressed: () {
-                  FirebaseAuth.instance.signOut();
+                  fb.FirebaseAuth.instance.signOut();
                 },
                 child: Text('Sign out'))
           ],

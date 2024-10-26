@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app_rider/models/user.dart' as user_model;
 
 class AuthResult {
   final String message;
@@ -9,7 +10,18 @@ class AuthResult {
 }
 
 class AuthService {
-  //final FirebaseAuth _fbInstance = FirebaseAuth.instance;
+  static bool isLoggedIn() {
+    return (FirebaseAuth.instance.currentUser != null);
+  }
+
+  static user_model.User getUser() {
+    User? fbUser = FirebaseAuth.instance.currentUser;
+    if (fbUser != null) {
+      return user_model.User.fromFirebaseUser(fbUser);
+    } else {
+      return user_model.User();
+    }
+  }
 
   static Future<AuthResult> createUserWithEmailAndPassword(
       email, password) async {
