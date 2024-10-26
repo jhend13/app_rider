@@ -1,4 +1,3 @@
-import 'package:app_rider/ui/pages/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'config/firebase_options.dart';
@@ -8,9 +7,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:app_rider/services/auth.dart';
 import 'package:app_rider/router/auth_guard.dart';
 import 'package:app_rider/models/user.dart';
-
-import 'package:app_rider/ui/pages/home_page.dart';
-import 'package:app_rider/ui/pages/sign_in.dart';
 
 //final providers = [EmailAuthProvider()];
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
