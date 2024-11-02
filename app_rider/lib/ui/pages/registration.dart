@@ -2,6 +2,10 @@ import 'package:app_rider/ui/pages/sign_in.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/services/auth.dart';
+import 'package:app_rider/services/rest_api.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:app_rider/models/user.dart';
+import 'package:provider/provider.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -13,6 +17,7 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   final _formKey = GlobalKey<FormState>();
 
+  final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
@@ -50,6 +55,31 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 24),
                         child: Text('Sign in to start using AADD services.'),
                       ),
+                      TextFormField(
+                        keyboardType: TextInputType.name,
+                        //autofocus: true,
+                        autofillHints: [AutofillHints.name],
+                        decoration: InputDecoration(
+                            filled: true,
+                            label: Text('Name'),
+                            labelStyle: theme.textTheme.labelMedium,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: theme.colorScheme.surface,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            )),
+                        controller: _name,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          return null;
+                        },
+                        //style: TextStyle(color: theme.colorScheme.onPrimary),
+                      ),
+                      SizedBox(width: 0, height: 12),
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         //autofocus: true,
@@ -140,10 +170,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 setState(() {
                                   requestWaiting = true;
                                 });
+
+                                // register user with Firebase
                                 AuthResult result = await AuthService
                                     .createUserWithEmailAndPassword(
                                         _email.text, _password.text);
-                                if (!result.isSuccess) {
+
+                                if (result.isSuccess) {
+                                  // get user instance
+                                  User user = context.read<User>();
+
+                                  //request our rest api to register user
+                                  // with newly created firebase UID
+                                  await RestApiService.createAndSyncUser(
+                                          user, _name.text)
+                                      .then((User user) {
+                                    // success!;
+                                  }).catchError((error) {
+                                    // failed to create profile with external api server
+                                    // delete the created firebase account
+                                    fb.FirebaseAuth.instance.currentUser
+                                        ?.delete();
+                                  });
+                                } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(

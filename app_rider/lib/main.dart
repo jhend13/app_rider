@@ -8,7 +8,7 @@ import 'package:app_rider/services/auth.dart';
 import 'package:app_rider/router/auth_guard.dart';
 import 'package:app_rider/models/user.dart';
 
-//final providers = [EmailAuthProvider()];
+// navigatorKey used in AuthGuard
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {

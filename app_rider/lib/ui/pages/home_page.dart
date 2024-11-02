@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_rider/config/constants.dart' as constants;
 import 'package:app_rider/ui/widgets/full_map.dart';
-
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:provider/provider.dart';
 import 'package:app_rider/models/user.dart';
@@ -31,7 +29,11 @@ class _HomePageState extends State<HomePage> {
           children: [
             Consumer<User>(builder: (_, user, __) {
               String? email = user.email;
-              return Text('Welcome $email');
+              String? name = user.name;
+              return Column(
+                children: [Text('Welcome $name'), Text('$email')],
+              );
+              ;
             }),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
