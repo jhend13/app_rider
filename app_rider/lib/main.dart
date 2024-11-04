@@ -19,13 +19,15 @@ Future<void> main() async {
 
 class App extends StatelessWidget {
   const App({super.key});
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: MultiProvider(
       providers: [
-        ChangeNotifierProvider<User>(create: (_) => AuthService.getUser())
+        ChangeNotifierProvider<User>(
+          create: (_) => AuthService.getUser(),
+          lazy: false,
+        )
       ],
       child: MaterialApp(
           title: 'Flutter Demo',

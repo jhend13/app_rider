@@ -15,15 +15,14 @@ class AuthService {
 
   static user_model.User getUser() {
     User? fbUser = FirebaseAuth.instance.currentUser;
-    if (fbUser != null) {
-      return user_model.User.fromFirebaseUser(fbUser);
-    } else {
-      return user_model.User();
-    }
+
+    return fbUser != null
+        ? user_model.User.fromFirebaseUser(fbUser)
+        : user_model.User();
   }
 
   static Future<AuthResult> createUserWithEmailAndPassword(
-      email, password) async {
+      user_model.User user, email, password) async {
     bool isSuccess = false;
     String message = '';
 
@@ -33,6 +32,9 @@ class AuthService {
         email: email,
         password: password,
       );
+
+      // update uid
+      user.uid = FirebaseAuth.instance.currentUser?.uid;
 
       isSuccess = true;
     } on FirebaseAuthException catch (e) {
@@ -46,13 +48,18 @@ class AuthService {
     return AuthResult(isSuccess: isSuccess, message: message);
   }
 
-  static Future<AuthResult> signInWithEmailAndPassword(email, password) async {
+  static Future<AuthResult> signInWithEmailAndPassword(
+      user_model.User user, email, password) async {
     bool isSuccess = false;
     String? message = '';
 
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+
+      // update uid
+      user.uid = FirebaseAuth.instance.currentUser?.uid;
+
       isSuccess = true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -65,5 +72,9 @@ class AuthService {
     } catch (e) {}
 
     return AuthResult(isSuccess: isSuccess, message: message);
+  }
+
+  static void deleteUser() {
+    FirebaseAuth.instance.currentUser?.delete();
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/services/auth.dart';
 import 'package:app_rider/services/rest_api.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:app_rider/models/user.dart';
 import 'package:provider/provider.dart';
 
@@ -171,26 +170,30 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   requestWaiting = true;
                                 });
 
+                                // get reference to user instance
+                                // from provider
+                                User user = context.read<User>();
+
                                 // register user with Firebase
                                 AuthResult result = await AuthService
                                     .createUserWithEmailAndPassword(
-                                        _email.text, _password.text);
+                                        user, _email.text, _password.text);
 
                                 if (result.isSuccess) {
-                                  // get user instance
-                                  User user = context.read<User>();
+                                  print('!!${user.uid}');
 
                                   //request our rest api to register user
                                   // with newly created firebase UID
                                   await RestApiService.createAndSyncUser(
                                           user, _name.text)
                                       .then((User user) {
+                                    user.name = _name.text;
                                     // success!;
                                   }).catchError((error) {
+                                    print('!! error');
                                     // failed to create profile with external api server
                                     // delete the created firebase account
-                                    fb.FirebaseAuth.instance.currentUser
-                                        ?.delete();
+                                    AuthService.deleteUser();
                                   });
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(

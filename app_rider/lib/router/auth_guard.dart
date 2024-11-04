@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import 'package:app_rider/ui/pages/home_page.dart';
 import 'package:app_rider/ui/pages/sign_in.dart';
-
 import 'package:app_rider/main.dart' as main;
 
 class AuthGuard extends StatefulWidget {
@@ -47,6 +47,7 @@ class _AuthGuardState extends State<AuthGuard> {
 
   @override
   Widget build(BuildContext context) {
+    //User? user = context.read<User?>();
     if (userData == null) {
       return const SignInPage();
     }

@@ -2,6 +2,10 @@ import 'package:app_rider/ui/pages/registration.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/services/auth.dart';
+import 'package:app_rider/services/rest_api.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:app_rider/models/user.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -111,10 +115,25 @@ class _SignInPageState extends State<SignInPage> {
                               setState(() {
                                 requestWaiting = true;
                               });
+
+                              // get user instance
+                              // MUST GET OBJ REFERENCE BEFORE AuthService call!
+                              User user = context.read<User>();
+
                               AuthResult result =
                                   await AuthService.signInWithEmailAndPassword(
-                                      _email.text, _password.text);
-                              if (!result.isSuccess) {
+                                      user, _email.text, _password.text);
+
+                              if (result.isSuccess) {
+                                //request our rest api to register user
+                                // with newly created firebase UID
+                                await RestApiService.syncUser(user)
+                                    .then((User user) {
+                                  // success!;
+                                }).catchError((error) {
+                                  //should probably log out the instance?
+                                });
+                              } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
