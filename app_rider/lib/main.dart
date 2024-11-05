@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 //import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 import 'package:app_rider/services/auth.dart';
+import 'package:app_rider/services/rest_api.dart';
 import 'package:app_rider/router/auth_guard.dart';
 import 'package:app_rider/models/user.dart';
 
@@ -13,22 +14,30 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const App());
+
+  User user = AuthService.getUser();
+
+  if (AuthService.isLoggedIn()) {
+    // sync
+    await RestApiService.syncUser(user);
+  }
+
+  runApp(App(user: user));
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  final User user;
+
+  const App({super.key, required this.user});
+  //const App({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: MultiProvider(
-      providers: [
-        ChangeNotifierProvider<User>(
-          create: (_) => AuthService.getUser(),
-          lazy: false,
-        )
-      ],
+      providers: [ChangeNotifierProvider.value(value: user)],
       child: MaterialApp(
           title: 'Flutter Demo',
           darkTheme: ThemeData(

@@ -34,7 +34,9 @@ class AuthService {
       );
 
       // update uid
-      user.uid = FirebaseAuth.instance.currentUser?.uid;
+      User? fbUser = FirebaseAuth.instance.currentUser;
+      user.uid = fbUser?.uid;
+      user.email = fbUser?.email;
 
       isSuccess = true;
     } on FirebaseAuthException catch (e) {
@@ -58,7 +60,9 @@ class AuthService {
           .signInWithEmailAndPassword(email: email, password: password);
 
       // update uid
-      user.uid = FirebaseAuth.instance.currentUser?.uid;
+      User? fbUser = FirebaseAuth.instance.currentUser;
+      user.uid = fbUser?.uid;
+      user.email = fbUser?.email;
 
       isSuccess = true;
     } on FirebaseAuthException catch (e) {

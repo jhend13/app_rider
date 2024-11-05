@@ -79,7 +79,8 @@ class _SignInPageState extends State<SignInPage> {
                           // }
                           return null;
                         },
-                        //style: TextStyle(color: theme.colorScheme.onPrimary),
+                        //style: TextStyle(color: theme.colorScheme.on
+                        //mary),
                       ),
                       SizedBox(width: 0, height: 12),
                       TextFormField(

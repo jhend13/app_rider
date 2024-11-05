@@ -1,3 +1,4 @@
+import 'package:app_rider/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/ui/widgets/full_map.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
@@ -28,10 +29,13 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Consumer<User>(builder: (_, user, __) {
-              String? email = user.email;
-              String? name = user.name;
               return Column(
-                children: [Text('Welcome $name'), Text('$email')],
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                    child: Text('Welcome ${user.name}'),
+                  )
+                ],
               );
               ;
             }),
@@ -42,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   fb.FirebaseAuth.instance.signOut();
                 },
-                child: Text('Sign out'))
+                child: const Text('Sign out')),
           ],
         ),
       ),

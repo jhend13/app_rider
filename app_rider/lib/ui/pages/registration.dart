@@ -180,8 +180,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                         user, _email.text, _password.text);
 
                                 if (result.isSuccess) {
-                                  print('!!${user.uid}');
-
                                   //request our rest api to register user
                                   // with newly created firebase UID
                                   await RestApiService.createAndSyncUser(
@@ -190,7 +188,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                     user.name = _name.text;
                                     // success!;
                                   }).catchError((error) {
-                                    print('!! error');
                                     // failed to create profile with external api server
                                     // delete the created firebase account
                                     AuthService.deleteUser();
