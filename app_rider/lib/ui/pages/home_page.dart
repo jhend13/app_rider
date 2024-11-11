@@ -4,6 +4,7 @@ import 'package:app_rider/ui/widgets/full_map.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:provider/provider.dart';
 import 'package:app_rider/models/user.dart';
+import 'package:app_rider/ui/widgets/main_drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,34 +25,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      drawer: Drawer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Consumer<User>(builder: (_, user, __) {
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                    child: Text('Welcome ${user.name}'),
-                  )
-                ],
-              );
-              ;
-            }),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.tertiary,
-                    foregroundColor: Theme.of(context).colorScheme.onTertiary),
-                onPressed: () {
-                  fb.FirebaseAuth.instance.signOut();
-                },
-                child: const Text('Sign out')),
-          ],
-        ),
-      ),
+      drawer: const MainDrawer(),
       body: Column(
-        children: [FullMap()],
+        //children: [FullMap()],
+        children: [Text('*map widget here*')],
       ),
     );
   }
