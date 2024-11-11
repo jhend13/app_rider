@@ -6,11 +6,9 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:app_rider/services/auth.dart';
 import 'package:app_rider/services/rest_api.dart';
+import 'package:app_rider/services/navigation.dart';
 import 'package:app_rider/router/auth_guard.dart';
 import 'package:app_rider/models/user.dart';
-
-// navigatorKey used in AuthGuard
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +48,7 @@ class App extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x415f91)),
             useMaterial3: true,
           ),
-          navigatorKey: navigatorKey,
+          navigatorKey: NavigationService.navigatorKey,
           home: AuthGuard()),
     ));
   }
