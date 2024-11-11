@@ -20,7 +20,8 @@ Future<void> main() async {
   User user = AuthService.getUser();
 
   if (AuthService.isLoggedIn()) {
-    // sync
+    // sync firebase uid with respective data in our
+    // external database
     await RestApiService.syncUser(user);
   }
 
@@ -31,7 +32,6 @@ class App extends StatelessWidget {
   final User user;
 
   const App({super.key, required this.user});
-  //const App({super.key});
 
   @override
   Widget build(BuildContext context) {

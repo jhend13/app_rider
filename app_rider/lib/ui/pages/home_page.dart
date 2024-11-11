@@ -1,9 +1,11 @@
 import 'package:app_rider/services/auth.dart';
+import 'package:app_rider/ui/pages/socket_test.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/ui/widgets/full_map.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:provider/provider.dart';
 import 'package:app_rider/models/user.dart';
+import 'package:app_rider/main.dart' as main;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,6 +49,17 @@ class _HomePageState extends State<HomePage> {
                   fb.FirebaseAuth.instance.signOut();
                 },
                 child: const Text('Sign out')),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.tertiary,
+                    foregroundColor: Theme.of(context).colorScheme.onTertiary),
+                onPressed: () {
+                  main.navigatorKey.currentState?.push(
+                    MaterialPageRoute(
+                        builder: (context) => const SocketTestPage()),
+                  );
+                },
+                child: const Text('socket test'))
           ],
         ),
       ),
