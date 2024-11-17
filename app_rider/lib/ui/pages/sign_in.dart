@@ -2,7 +2,7 @@ import 'package:app_rider/ui/pages/registration.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/services/auth.dart';
-import 'package:app_rider/services/rest_api.dart';
+import 'package:app_rider/services/api/rest_api.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:app_rider/models/user.dart';
 import 'package:provider/provider.dart';

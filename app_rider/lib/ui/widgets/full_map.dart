@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_rider/services/location_service.dart';
+import 'package:app_rider/services/location.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 class FullMap extends StatefulWidget {
@@ -17,9 +17,6 @@ class FullMapState extends State<FullMap> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    String accessToken = const String.fromEnvironment("ACCESS_TOKEN");
-    MapboxOptions.setAccessToken(accessToken);
   }
 
   @override
@@ -53,7 +50,7 @@ class FullMapState extends State<FullMap> with WidgetsBindingObserver {
       cameraOptions: CameraOptions(
           zoom: 13,
           center: Point(coordinates: Position(-117.42503, 47.659016))),
-      key: ValueKey('mapWidget'),
+      key: const ValueKey('mapWidget'),
       onMapCreated: _onMapCreated,
       onTapListener: (context) async {
         print(await locationService.getPosition());

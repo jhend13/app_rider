@@ -1,9 +1,10 @@
 import 'package:app_rider/config/constants.dart' as constants;
+import 'package:app_rider/services/api/http_api.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:app_rider/models/user.dart';
 
-class RestApiService {
+class RestApiService implements HttpAPI {
   /* 
     takes a user object with a firebase UID and
     queries the restAPI server for the user info that is stored
