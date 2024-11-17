@@ -29,18 +29,13 @@ class AddressSearchbox extends StatelessWidget {
       // min of 2 seconds & min of two characters
       if (input.length >= 2 &&
           now.difference(lastApiRequest).inMilliseconds > 2000) {
-        print('passed');
         lastApiRequest = DateTime.timestamp();
 
         List<Address> addresses = await mapboxApi.forwardLookup(input);
-        print('num addresses:${addresses.length}');
 
         // returned addresses
 
         addressesNotifier.value = addresses;
-      } else {
-        print('elapsed:${lastApiRequest.difference(now).inMilliseconds}');
-        print('failed');
       }
     });
 
