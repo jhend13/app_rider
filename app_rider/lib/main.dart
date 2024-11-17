@@ -48,7 +48,7 @@ class App extends StatelessWidget {
         Provider.value(value: mapboxApi)
       ],
       child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'AADD',
           darkTheme: ThemeData(
             useMaterial3: true,
             brightness: Brightness.dark,

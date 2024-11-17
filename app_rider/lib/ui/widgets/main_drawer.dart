@@ -35,8 +35,8 @@ class MainDrawer extends StatelessWidget {
             const Divider(),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.tertiary,
-                    foregroundColor: Theme.of(context).colorScheme.onTertiary),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary),
                 onPressed: () {},
                 child: const Text('Sign out'))
           ],
