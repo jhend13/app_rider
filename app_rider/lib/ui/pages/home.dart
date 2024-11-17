@@ -1,10 +1,10 @@
 import 'package:app_rider/models/address.dart';
 import 'package:app_rider/models/user.dart';
+import 'package:app_rider/services/navigation.dart';
+import 'package:app_rider/ui/pages/address.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/ui/widgets/main_drawer.dart';
-import 'package:app_rider/ui/widgets/full_map.dart';
 import 'package:app_rider/ui/widgets/address_searchbox.dart';
-import 'package:app_rider/services/api/mapbox_api.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                 width: 300,
                 child: Row(
                   children: [
-                    Text('Get home safe',
+                    Text('Get home safe,',
                         style: theme.textTheme.headlineSmall!
                             .copyWith(fontWeight: FontWeight.bold)),
                     Text(' ${user.name}',
@@ -56,28 +56,46 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: null,
                 width: 300,
-                child: addressSearch,
+                child: TextFormField(
+                  autofocus: false,
+                  decoration: InputDecoration(
+                      filled: true,
+                      label: const Text('Where\'s home?'),
+                      labelStyle: theme.textTheme.labelMedium,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: theme.colorScheme.surface,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      )),
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    NavigationService.navigatorKey.currentState!.push(
+                        MaterialPageRoute(builder: (context) => AddressPage()));
+                  },
+                ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              // ValueListenableBuilder(
-              //     valueListenable: addressSearch.addressesNotifier,
-              //     builder: (context, addresses, child) {
-              //       List<Padding> texts = addresses
-              //           .map((e) => Padding(
-              //                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-              //                 child: Text(e.address),
-              //               ))
-              //           .toList();
-              //       return SizedBox(
-              //         width: 300,
-              //         child: Column(
-              //           children:
-              //               (addresses.isEmpty) ? [] : [...texts, Divider()],
-              //         ),
-              //       );
-              //     }),
+              ValueListenableBuilder(
+                  valueListenable: addressSearch.addressesNotifier,
+                  builder: (context, addresses, child) {
+                    List<Padding> texts = addresses
+                        .map((e) => Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              child: Text(e.address),
+                            ))
+                        .toList();
+                    return SizedBox(
+                      width: 300,
+                      child: Column(
+                        children:
+                            (addresses.isEmpty) ? [] : [...texts, Divider()],
+                      ),
+                    );
+                  }),
               SizedBox(
                 width: 300,
                 child: Row(

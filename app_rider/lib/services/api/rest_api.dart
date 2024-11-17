@@ -20,8 +20,6 @@ class RestApiService implements HttpAPI {
       final response = await http.get(uri);
       final json = jsonDecode(response.body) as Map<String, dynamic>;
 
-      print(json);
-
       if (json.isNotEmpty && response.statusCode == 200) {
         user.syncFromJSON(json);
       } else {

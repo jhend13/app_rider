@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_rider/models/user.dart';
 import 'package:app_rider/services/navigation.dart';
-import 'package:app_rider/ui/pages/test_page.dart';
-import 'package:app_rider/ui/pages/home_page.dart';
+import 'package:app_rider/ui/pages/home.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});
@@ -11,8 +10,7 @@ class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> navItems = [
-      {'icon': Icons.person, 'label': 'My Profile', 'target': const HomePage()},
-      {'icon': Icons.settings, 'label': 'Settings', 'target': const TestPage()}
+      {'icon': Icons.home, 'label': 'Home', 'target': const HomePage()},
     ];
 
     List<Widget> navItemWidgets = navItems
