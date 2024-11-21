@@ -1,4 +1,4 @@
-import 'package:app_rider/services/api/mapbox_api.dart';
+import 'package:app_rider/services/api/mapbox.dart';
 import 'package:app_rider/services/location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';

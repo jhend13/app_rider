@@ -1,5 +1,5 @@
 import 'package:app_rider/config/constants.dart' as constants;
-import 'package:app_rider/services/api/http_api.dart';
+import 'package:app_rider/services/api/http.dart';
 import 'package:app_rider/models/address.dart';
 import 'package:app_rider/services/location.dart';
 import 'package:geolocator/geolocator.dart' show Position;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app_rider/services/api/mapbox_api.dart';
+import 'package:app_rider/services/api/mapbox.dart';
 import 'package:app_rider/models/address.dart';
 
 class AddressSearchbox extends StatelessWidget {
