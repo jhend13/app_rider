@@ -43,19 +43,63 @@ class AddressSearchbox extends StatelessWidget {
       }
     });
 
-    return TextFormField(
-        keyboardType: TextInputType.text,
-        controller: _textController,
-        decoration: InputDecoration(
-            filled: true,
-            label: const Text('Where\'s home?'),
-            labelStyle: theme.textTheme.labelMedium,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: theme.colorScheme.surface,
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(12),
-            )));
+    Widget buildInputBox(TextEditingController controller,
+        {Color? color, Color? bgColor, bool? enabled, String? hint}) {
+      Color finalColor = color ?? theme.colorScheme.onPrimaryContainer;
+      Color finalBgColor = bgColor ?? theme.colorScheme.primaryContainer;
+
+      return IntrinsicHeight(
+          child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: finalBgColor,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    bottomLeft: Radius.circular(12))),
+            child: SizedBox(
+                height: double.infinity,
+                child: Icon(Icons.place, color: finalColor)),
+          ),
+          Expanded(
+            child: TextFormField(
+                enabled: enabled ?? true,
+                keyboardType: TextInputType.text,
+                controller: controller,
+                style: TextStyle(color: color),
+                cursorColor: color,
+                decoration: InputDecoration(
+                    filled: true,
+                    fillColor: bgColor,
+                    labelText: hint ?? '',
+                    hintStyle:
+                        theme.textTheme.labelLarge!.copyWith(color: color),
+                    labelStyle: theme.textTheme.labelMedium!
+                        .copyWith(fontSize: 15, color: color),
+                    contentPadding: const EdgeInsets.all(5),
+                    border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(12),
+                            bottomRight: Radius.circular(12))))),
+          ),
+        ],
+      ));
+    }
+
+    return Column(
+      children: [
+        buildInputBox(TextEditingController(),
+            enabled: false,
+            color: theme.colorScheme.onTertiary,
+            bgColor: theme.colorScheme.tertiary,
+            hint: 'Current Location'), // normally disposed of
+        const SizedBox(height: 10),
+        buildInputBox(_textController,
+            color: theme.colorScheme.onPrimary,
+            bgColor: theme.colorScheme.primary,
+            hint: 'Destination')
+      ],
+    );
   }
 }

@@ -3,27 +3,45 @@ import 'package:app_rider/services/api/http_api.dart';
 import 'package:app_rider/models/address.dart';
 import 'package:app_rider/services/location.dart';
 import 'package:geolocator/geolocator.dart' show Position;
-//import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart'
+    show MapboxOptions;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class MapboxApiService implements HttpAPI {
   final String _accessToken;
-  final LocationService _locationService = LocationService();
 
+  // two ways to create MapBoxApiService
+  // 1: you already have the access token
+  // 2: mapboxapi will get the accesstoken itself but request is async...
   MapboxApiService(this._accessToken);
+  MapboxApiService._(this._accessToken);
 
-  // below pattern would be used if we want MapboxApiService
-  // to automatically get the current accessToken from
-  // MapboxOptions.getAccessToken (returns Future<String>)
-  // but for now passing to generative constructor makes the most sense
+  static Future<MapboxApiService> create() async {
+    String token = await MapboxOptions.getAccessToken();
+    return MapboxApiService._(token);
+  }
 
-  // MapboxApiService._(this._accessToken);
+  Future<Address> reverseLookupSingle(double lat, double long) async {
+    //mapbox api default limit for reverse api is 1
+    final uri = Uri.http(
+        constants.uriMapboxApiAuthority, constants.uriMapboxApiGeocodeReverse, {
+      'latitude': lat.toString(),
+      'longitude': long.toString(),
+      'access_token': _accessToken,
+      'types': 'street,address'
+    });
 
-  // static Future<MapboxApiService> create() async {
-  //   String token = await MapboxOptions.getAccessToken();
-  //   return MapboxApiService._(token);
-  // }
+    final response = await http.get(uri);
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
+
+    // todo
+    // implement handling of this ...
+    // will also have json['message']
+    if (json.containsKey('error_code')) {}
+
+    return Address.fromJson(json['features'][0] as Map<String, dynamic>);
+  }
 
   Future<List<Address>> forwardLookup(String address) async {
     // todo
@@ -31,7 +49,7 @@ class MapboxApiService implements HttpAPI {
     // need to research if programmtically accessing via getPosition()
     // really has any limitations or if there's "too much"
     // also should probably just be passed as a param?...
-    Position pos = await _locationService.getPosition();
+    Position pos = await LocationService.getPosition();
 
     final uri = Uri.http(
         constants.uriMapboxApiAuthority, constants.uriMapboxApiGeocodeForward, {

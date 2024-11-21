@@ -1,7 +1,7 @@
 import 'package:app_rider/models/address.dart';
 import 'package:app_rider/models/user.dart';
 import 'package:app_rider/services/navigation.dart';
-import 'package:app_rider/ui/pages/address.dart';
+import 'package:app_rider/ui/pages/route.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/ui/widgets/main_drawer.dart';
 import 'package:app_rider/ui/widgets/address_searchbox.dart';
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     FocusScope.of(context).unfocus();
                     NavigationService.navigatorKey.currentState!.push(
-                        MaterialPageRoute(builder: (context) => AddressPage()));
+                        MaterialPageRoute(builder: (context) => RoutePage()));
                   },
                 ),
               ),

@@ -11,7 +11,6 @@ class FullMap extends StatefulWidget {
 
 class FullMapState extends State<FullMap> with WidgetsBindingObserver {
   MapboxMap? mapboxMap;
-  LocationService locationService = LocationService();
 
   @override
   void initState() {
@@ -53,7 +52,7 @@ class FullMapState extends State<FullMap> with WidgetsBindingObserver {
       key: const ValueKey('mapWidget'),
       onMapCreated: _onMapCreated,
       onTapListener: (context) async {
-        print(await locationService.getPosition());
+        print(await LocationService.getPosition());
       },
     ));
   }
