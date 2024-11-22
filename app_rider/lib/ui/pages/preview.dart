@@ -1,14 +1,14 @@
-import 'package:app_rider/ui/widgets/full_map.dart';
+import 'package:app_rider/ui/widgets/route_map.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/models/address.dart';
 import 'package:app_rider/services/navigation.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 class PreviewPage extends StatefulWidget {
-  final Address locStart;
-  final Address locEnd;
+  final Address origin;
+  final Address destination;
 
-  const PreviewPage({super.key, required this.locStart, required this.locEnd});
+  const PreviewPage(
+      {super.key, required this.origin, required this.destination});
 
   @override
   State<PreviewPage> createState() => _PreviewPageState();
@@ -30,8 +30,16 @@ class _PreviewPageState extends State<PreviewPage> {
             },
             icon: const Icon(Icons.close)),
       ),
-      body: Column(
-        children: [FullMap()],
+      body: Stack(
+        children: [
+          RouteMap(
+            origin: widget.origin,
+            destination: widget.destination,
+          ),
+          Column(
+            children: [Text('Previewing route')],
+          )
+        ],
       ),
     );
   }

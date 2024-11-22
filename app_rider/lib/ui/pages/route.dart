@@ -20,7 +20,7 @@ class RoutePage extends StatelessWidget {
     // address was selected
     NavigationService.navigatorKey.currentState!.push(MaterialPageRoute(
         builder: (context) =>
-            PreviewPage(locStart: currentAddress, locEnd: address)));
+            PreviewPage(origin: currentAddress, destination: address)));
   }
 
   @override

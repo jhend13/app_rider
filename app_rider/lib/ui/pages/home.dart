@@ -1,6 +1,8 @@
 import 'package:app_rider/models/address.dart';
+import 'package:app_rider/config/addreses.dart';
 import 'package:app_rider/models/user.dart';
 import 'package:app_rider/services/navigation.dart';
+import 'package:app_rider/ui/pages/preview.dart';
 import 'package:app_rider/ui/pages/route.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/ui/widgets/main_drawer.dart';
@@ -16,10 +18,23 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   AddressSearchbox addressSearch = AddressSearchbox();
+  bool asyncRequestActive = false;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void _onClickAddressShortcutResult(Address address) async {
+    if (asyncRequestActive) return;
+    asyncRequestActive = true;
+    Address currentAddress = await Address.fromCurrentLocation();
+    asyncRequestActive = false;
+
+    // address was selected
+    NavigationService.navigatorKey.currentState!.push(MaterialPageRoute(
+        builder: (context) =>
+            PreviewPage(origin: currentAddress, destination: address)));
   }
 
   @override
@@ -33,7 +48,6 @@ class _HomePageState extends State<HomePage> {
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            //children: [FullMap()],
             children: [
               const SizedBox(width: double.infinity),
               SizedBox(
@@ -79,23 +93,6 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 20,
               ),
-              ValueListenableBuilder(
-                  valueListenable: addressSearch.addressesNotifier,
-                  builder: (context, addresses, child) {
-                    List<Padding> texts = addresses
-                        .map((e) => Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: Text(e.address),
-                            ))
-                        .toList();
-                    return SizedBox(
-                      width: 300,
-                      child: Column(
-                        children:
-                            (addresses.isEmpty) ? [] : [...texts, Divider()],
-                      ),
-                    );
-                  }),
               SizedBox(
                 width: 300,
                 child: Row(
@@ -131,23 +128,27 @@ class _HomePageState extends State<HomePage> {
                     Icon(Icons.pin_drop_sharp,
                         color: Theme.of(context).colorScheme.primary),
                     const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Fairchild AFB',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text('Fairchild AFB, WA',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(color: theme.colorScheme.secondary)),
-                      ],
-                    )
+                    GestureDetector(
+                        onTap: () =>
+                            _onClickAddressShortcutResult(address_fafb),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Fairchild AFB',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Text('Fairchild AFB, WA',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color: theme.colorScheme.secondary)),
+                          ],
+                        ))
                   ],
                 ),
               )

@@ -11,8 +11,8 @@ class Address {
   final String street;
   final String name;
   final int? zipcode;
-  double? lat;
-  double? long;
+  double lat;
+  double long;
 
   Address(
       {required this.address,
@@ -21,7 +21,9 @@ class Address {
       required this.place,
       required this.street,
       required this.name,
-      this.zipcode});
+      this.zipcode,
+      required this.lat,
+      required this.long});
 
   static Future<Address> fromCurrentLocation() async {
     Position pos = await LocationService.getPosition();
@@ -38,7 +40,9 @@ class Address {
         countryCode: json['properties']['context']['country']['country_code'],
         street: json['properties']['context']['street']['name'],
         place: json['properties']['context']['place']['name'],
-        name: json['properties']['name']);
+        name: json['properties']['name'],
+        lat: json['properties']['coordinates']['latitude'],
+        long: json['properties']['coordinates']['longitude']);
   }
 
   Address.fromEmpty()
@@ -48,5 +52,7 @@ class Address {
         place = '',
         street = '',
         name = '',
+        lat = 0,
+        long = 0,
         zipcode = 0;
 }
