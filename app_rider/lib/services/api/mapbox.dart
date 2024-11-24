@@ -1,4 +1,6 @@
 import 'package:app_rider/config/constants.dart' as constants;
+import 'package:app_rider/models/point.dart';
+import 'package:app_rider/models/route.dart';
 import 'package:app_rider/services/api/http.dart';
 import 'package:app_rider/models/address.dart';
 import 'package:app_rider/services/location.dart';
@@ -20,6 +22,28 @@ class MapboxApiService implements HttpAPI {
   static Future<MapboxApiService> create() async {
     String token = await MapboxOptions.getAccessToken();
     return MapboxApiService._(token);
+  }
+
+  // right now just gets the fastest/shortest route.
+  // dont have a use for alternative routes right now.
+  Future<Route> getRoute(List<Point> points,
+      [String profile = 'mapbox/driving-traffic']) async {
+    String path = 'directions/v5/$profile/${points.join(';')}';
+    final uri = Uri.https(constants.uriMapboxApiAuthority, path, {
+      'access_token': _accessToken,
+      'alternatives': 'false',
+      'geometries': 'geojson'
+    });
+
+    final response = await http.get(uri);
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
+
+    // todo
+    // implement handling of this ...
+    // will also have json['message']
+    if (json.containsKey('error_code')) {}
+
+    return Route.fromJSON(json['routes'][0]);
   }
 
   Future<Address> reverseLookupSingle(double lat, double long) async {
