@@ -32,12 +32,12 @@ class _PreviewPageState extends State<PreviewPage> {
       ),
       body: Stack(
         children: [
-          RouteMap(
-            origin: widget.origin,
-            destination: widget.destination,
-          ),
-          Column(
-            children: [Text('Previewing route')],
+          SizedBox(
+            height: 250,
+            child: RouteMap(
+              origin: widget.origin,
+              destination: widget.destination,
+            ),
           )
         ],
       ),
