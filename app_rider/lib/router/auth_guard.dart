@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
 
-import 'package:app_rider/ui/pages/home_page.dart';
+import 'package:app_rider/ui/pages/home.dart';
 import 'package:app_rider/ui/pages/sign_in.dart';
-import 'package:app_rider/main.dart' as main;
+import 'package:app_rider/services/navigation.dart';
 
 class AuthGuard extends StatefulWidget {
   //const AuthGuard({Key? key}) : super(key: key);
@@ -29,7 +28,7 @@ class _AuthGuardState extends State<AuthGuard> {
       // otherwise if a route has been pushed, AuthGuard will rebuild up the stack
       // but the pushed route will continue to show.
       // returning true in popUntil does not produce any effects
-      main.navigatorKey.currentState?.popUntil((route) {
+      NavigationService.navigatorKey.currentState?.popUntil((route) {
         if (route.settings.name == '/') {
           return true;
         }

@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
-  Future<Position> getPosition() async {
+  static Future<Position> getPosition() async {
     if (await checkPermissions()) {
       const LocationSettings locationSettings = LocationSettings(
         accuracy: LocationAccuracy.high,
@@ -15,7 +15,7 @@ class LocationService {
     return Future.error('Location cannot be accessed.');
   }
 
-  Future<bool> checkPermissions() async {
+  static Future<bool> checkPermissions() async {
     bool locationServiceEnabled;
     LocationPermission permission;
 

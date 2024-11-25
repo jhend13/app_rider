@@ -1,9 +1,10 @@
 import 'package:app_rider/config/constants.dart' as constants;
+import 'package:app_rider/services/api/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:app_rider/models/user.dart';
 
-class RestApiService {
+class RestApiService implements HttpAPI {
   /* 
     takes a user object with a firebase UID and
     queries the restAPI server for the user info that is stored
@@ -18,8 +19,6 @@ class RestApiService {
 
       final response = await http.get(uri);
       final json = jsonDecode(response.body) as Map<String, dynamic>;
-
-      print(json);
 
       if (json.isNotEmpty && response.statusCode == 200) {
         user.syncFromJSON(json);
