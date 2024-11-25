@@ -1,3 +1,4 @@
+import 'package:app_rider/ui/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/services/socket.dart';
 
@@ -20,14 +21,7 @@ class _SocketTestPageState extends State<SocketTestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      drawer: Drawer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('yo'),
-          ],
-        ),
-      ),
+      drawer: const MainDrawer(),
       body: Column(
         children: [
           Text('socket test'),

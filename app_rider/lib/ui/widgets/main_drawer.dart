@@ -1,3 +1,4 @@
+import 'package:app_rider/ui/pages/socket_test.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_rider/models/user.dart';
@@ -11,6 +12,11 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> navItems = [
       {'icon': Icons.home, 'label': 'Home', 'target': const HomePage()},
+      {
+        'icon': Icons.rocket_launch,
+        'label': 'WSS',
+        'target': const SocketTestPage()
+      }
     ];
 
     List<Widget> navItemWidgets = navItems
