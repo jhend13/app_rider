@@ -42,6 +42,7 @@ class RouteMapState extends State<RouteMap> with WidgetsBindingObserver {
   @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
+    //WidgetsBinding.instance.platformDispatcher.platformBrightness;
     setState(() {});
   }
 
@@ -85,7 +86,7 @@ class RouteMapState extends State<RouteMap> with WidgetsBindingObserver {
           coordinates:
               Position(widget.destination.long, widget.destination.lat))
     ], CameraOptions(zoom: 13),
-        MbxEdgeInsets(top: 10, left: 40, bottom: 10, right: 40), null, null);
+        MbxEdgeInsets(top: 40, left: 40, bottom: 40, right: 40), null, null);
 
     mapboxMap.setCamera(options);
 
@@ -106,15 +107,16 @@ class RouteMapState extends State<RouteMap> with WidgetsBindingObserver {
   addRoute(Route route) {
     polylineManager!.create(PolylineAnnotationOptions(
         geometry: route.getLineString(),
-        lineWidth: 3.0,
-        lineColor: 0xFF0000FF));
+        lineWidth: 4.0,
+        lineColor: Colors.blueGrey.value));
   }
 
   addMarker(double long, double lat) {
     PointAnnotationOptions point = PointAnnotationOptions(
         geometry: Point(coordinates: Position(long, lat)),
         image: mapMarkerImageData,
-        iconSize: 3.0);
+        iconSize: 3.0,
+        iconAnchor: IconAnchor.BOTTOM);
 
     annotationManager?.create(point);
   }
@@ -127,9 +129,6 @@ class RouteMapState extends State<RouteMap> with WidgetsBindingObserver {
     }
 
     var isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    mapboxMap?.style.setStyleURI(
-        (isDarkMode) ? MapboxStyles.DARK : MapboxStyles.MAPBOX_STREETS);
 
     return Expanded(
         child: MapWidget(
