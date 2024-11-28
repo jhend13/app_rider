@@ -11,7 +11,7 @@ class WebSocketService {
 
   Stream<dynamic> get stream => _socket.stream;
 
-  void sendJson(Map<String, dynamic> data) {
+  void send(Map<String, dynamic> data) {
     String json = jsonEncode(data);
     _socket.sink.add(json);
   }

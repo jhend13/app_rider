@@ -1,6 +1,6 @@
 import 'package:app_rider/ui/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:app_rider/services/socket.dart';
+import 'package:app_rider/services/web_socket.dart';
 
 class SocketTestPage extends StatefulWidget {
   const SocketTestPage({super.key});
@@ -10,7 +10,7 @@ class SocketTestPage extends StatefulWidget {
 }
 
 class _SocketTestPageState extends State<SocketTestPage> {
-  SocketService ride = SocketService();
+  WebSocketService ride = WebSocketService();
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _SocketTestPageState extends State<SocketTestPage> {
         children: [
           Text('socket test'),
           StreamBuilder(
-            stream: ride.socket.stream,
+            stream: ride.stream,
             builder: (context, snapshot) {
               return Text(snapshot.hasData ? '${snapshot.data}' : '');
             },
