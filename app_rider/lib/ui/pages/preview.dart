@@ -49,9 +49,8 @@ class _PreviewPageState extends State<PreviewPage> {
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              Theme.of(context).colorScheme.onTertiaryContainer,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.onTertiary),
+                              theme.colorScheme.onTertiaryContainer,
+                          foregroundColor: theme.colorScheme.onTertiary),
                       child: Text(
                         'Confirm',
                         style: theme.textTheme.labelMedium!
@@ -61,19 +60,14 @@ class _PreviewPageState extends State<PreviewPage> {
               ),
             ),
           ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: AppBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              leading: IconButton(
-                  onPressed: () {
-                    NavigationService.navigatorKey.currentState!.pop();
-                  },
-                  icon: const Icon(Icons.close)),
-            ),
+          AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+                onPressed: () {
+                  NavigationService.navigatorKey.currentState!.pop();
+                },
+                icon: const Icon(Icons.close)),
           ),
         ],
       ),
