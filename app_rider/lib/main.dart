@@ -1,4 +1,5 @@
 import 'package:app_rider/services/api/mapbox.dart';
+import 'package:app_rider/services/web_socket.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
@@ -46,7 +47,10 @@ class App extends StatelessWidget {
         child: MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: user),
-        Provider.value(value: mapboxApi)
+        Provider.value(value: mapboxApi),
+        Provider.value(
+          value: WebSocketService(),
+        )
       ],
       child: MaterialApp(
           title: 'AADD',

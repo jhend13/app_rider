@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:app_rider/services/web_socket.dart';
 import 'package:app_rider/ui/widgets/route_map.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/models/address.dart';
 import 'package:app_rider/services/navigation.dart';
+import 'package:provider/provider.dart';
 
 class PreviewPage extends StatefulWidget {
   final Address origin;
@@ -15,9 +19,23 @@ class PreviewPage extends StatefulWidget {
 }
 
 class _PreviewPageState extends State<PreviewPage> {
+  late final WebSocketService webSocketService;
+
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // lets go ahead and get the WebSocketService from Provider
+    webSocketService = Provider.of<WebSocketService>(context, listen: false);
+  }
+
+  void _confirm() {
+    webSocketService.send({'msg': 'Ride was confirmed.'});
   }
 
   @override
@@ -46,7 +64,10 @@ class _PreviewPageState extends State<PreviewPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print('confirm');
+                        _confirm();
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor:
                               theme.colorScheme.onTertiaryContainer,
@@ -60,15 +81,20 @@ class _PreviewPageState extends State<PreviewPage> {
               ),
             ),
           ),
-          AppBar(
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            leading: IconButton(
-                onPressed: () {
-                  NavigationService.navigatorKey.currentState!.pop();
-                },
-                icon: const Icon(Icons.close)),
-          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              leading: IconButton(
+                  onPressed: () {
+                    NavigationService.navigatorKey.currentState!.pop();
+                  },
+                  icon: const Icon(Icons.close)),
+            ),
+          )
         ],
       ),
     );
