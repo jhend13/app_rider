@@ -5,12 +5,14 @@ import 'package:provider/provider.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'config/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:app_rider/services/auth.dart';
 import 'package:app_rider/services/api/rest.dart';
 import 'package:app_rider/services/navigation.dart';
 import 'package:app_rider/router/auth_guard.dart';
 import 'package:app_rider/models/user.dart';
+import 'package:app_rider/services/notification.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +21,8 @@ Future<void> main() async {
   MapboxOptions.setAccessToken(accessToken);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  NotificationService notificationService = NotificationService();
 
   User user = AuthService.getUser();
 
