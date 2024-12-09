@@ -47,10 +47,12 @@ class App extends StatelessWidget {
         child: MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: user),
+        Provider(
+          create: (context) => WebSocketService()..connect(),
+          dispose: (context, value) => value.dispose(),
+          lazy: false,
+        ),
         Provider.value(value: mapboxApi),
-        Provider.value(
-          value: WebSocketService(),
-        )
       ],
       child: MaterialApp(
           title: 'AADD',

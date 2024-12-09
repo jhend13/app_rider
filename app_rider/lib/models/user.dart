@@ -26,10 +26,12 @@ class User extends ChangeNotifier {
 
   set name(String? val) {
     _name = val;
+    notifyListeners();
   }
 
   set id(int? val) {
     _id = val;
+    notifyListeners();
   }
 
   // will take the additional user data from the rest server

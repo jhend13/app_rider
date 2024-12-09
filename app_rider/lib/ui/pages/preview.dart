@@ -1,11 +1,12 @@
 import 'dart:io';
-
+import 'package:app_rider/services/ride.dart';
 import 'package:app_rider/services/web_socket.dart';
 import 'package:app_rider/ui/widgets/route_map.dart';
 import 'package:flutter/material.dart';
 import 'package:app_rider/models/address.dart';
 import 'package:app_rider/services/navigation.dart';
 import 'package:provider/provider.dart';
+import 'package:app_rider/config/constants.dart' show WebsocketActionTypes;
 
 class PreviewPage extends StatefulWidget {
   final Address origin;
@@ -20,6 +21,7 @@ class PreviewPage extends StatefulWidget {
 
 class _PreviewPageState extends State<PreviewPage> {
   late final WebSocketService webSocketService;
+  Ride? ride;
 
   @override
   void initState() {
@@ -35,7 +37,7 @@ class _PreviewPageState extends State<PreviewPage> {
   }
 
   void _confirm() {
-    webSocketService.send({'msg': 'Ride was confirmed.'});
+    ride = Ride(webSocketService)..confirm();
   }
 
   @override

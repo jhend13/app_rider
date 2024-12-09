@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:app_rider/config/constants.dart' as constants;
 
@@ -9,7 +10,9 @@ class WebSocketService {
 
   Stream<dynamic> get stream => _socket?.stream ?? const Stream.empty();
 
-  WebSocketService() {
+  WebSocketService();
+
+  void connect() {
     _connect();
   }
 
@@ -45,12 +48,20 @@ class WebSocketService {
     });
   }
 
-  void send(Map<String, dynamic> data) {
-    String json = jsonEncode(data);
+  void send(Enum webSocketActionType, Map<String, dynamic> data) {
+    Map<String, dynamic> payload = {
+      'action': webSocketActionType.name,
+      'data': data
+    };
+    String json = jsonEncode(payload);
     _socket?.sink.add(json);
   }
 
   void close() {
     _socket?.sink.close();
+  }
+
+  void dispose() {
+    close();
   }
 }
