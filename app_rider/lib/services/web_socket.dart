@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:app_rider/config/constants.dart' as constants;
 
@@ -8,7 +7,11 @@ class WebSocketService {
   bool _isConnecting = false;
   WebSocketChannel? _socket;
 
-  Stream<dynamic> get stream => _socket?.stream ?? const Stream.empty();
+  // because WebSocketChannel uses a single-subscription stream
+  // we need a middleman Broadcast stream that can allow multiple subscribers
+  Stream<dynamic> _broadcastStream = const Stream.empty();
+
+  Stream<dynamic> get stream => _broadcastStream;
 
   WebSocketService();
 
@@ -16,9 +19,10 @@ class WebSocketService {
     _connect();
   }
 
+  void getStream() {}
+
   void _connect() {
     if (_isConnecting) return;
-
     _isConnecting = true;
 
     try {
@@ -28,12 +32,13 @@ class WebSocketService {
 
       _socket!.ready.then((val) {
         _isConnecting = false;
+        _broadcastStream = _socket!.stream.asBroadcastStream();
       }, onError: (err) {
         _isConnecting = false;
         _reconnect();
       });
 
-      _socket!.stream.listen((data) {}, onError: (err) {}, onDone: () {
+      _broadcastStream.listen((data) {}, onError: (err) {}, onDone: () {
         _reconnect();
       });
     } catch (e) {
@@ -48,10 +53,10 @@ class WebSocketService {
     });
   }
 
-  void send(Enum webSocketActionType, Map<String, dynamic> data) {
+  void send(Enum webSocketActionType, [Map<String, dynamic>? data]) {
     Map<String, dynamic> payload = {
       'action': webSocketActionType.name,
-      'data': data
+      'data': data ?? {}
     };
     String json = jsonEncode(payload);
     _socket?.sink.add(json);

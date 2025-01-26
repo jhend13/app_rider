@@ -39,7 +39,6 @@ class App extends StatelessWidget {
   final MapboxApiService mapboxApi;
 
   const App({super.key, required this.user, required this.mapboxApi});
-  //const App({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +52,15 @@ class App extends StatelessWidget {
           lazy: false,
         ),
         Provider.value(value: mapboxApi),
+        // ProxyProvider<User, WebSocketService>(
+        //   create: (context) => WebSocketService()..connect(),
+        //   update: (_, user, websocketService) {
+        //     websocketService!.setUid(user.uid);
+        //     return websocketService;
+        //   },
+        //   dispose: (context, value) => value.dispose(),
+        //   lazy: false,
+        // ),
       ],
       child: MaterialApp(
           title: 'AADD',

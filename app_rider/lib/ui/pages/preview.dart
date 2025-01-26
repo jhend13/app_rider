@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app_rider/models/user.dart';
 import 'package:app_rider/services/ride.dart';
 import 'package:app_rider/services/web_socket.dart';
 import 'package:app_rider/ui/widgets/route_map.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:app_rider/models/address.dart';
 import 'package:app_rider/services/navigation.dart';
 import 'package:provider/provider.dart';
-import 'package:app_rider/config/constants.dart' show WebsocketActionTypes;
 
 class PreviewPage extends StatefulWidget {
   final Address origin;
@@ -20,24 +20,21 @@ class PreviewPage extends StatefulWidget {
 }
 
 class _PreviewPageState extends State<PreviewPage> {
-  late final WebSocketService webSocketService;
-  Ride? ride;
+  late final WebSocketService _webSocketService;
+  late User _user;
+  Ride? _ride;
 
   @override
   void initState() {
     super.initState();
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    // lets go ahead and get the WebSocketService from Provider
-    webSocketService = Provider.of<WebSocketService>(context, listen: false);
+    // get some dependencies from Provider
+    _webSocketService = Provider.of<WebSocketService>(context, listen: false);
+    _user = Provider.of<User>(context, listen: false);
   }
 
   void _confirm() {
-    ride = Ride(webSocketService)..confirm();
+    (_ride ??= Ride(_user, _webSocketService)).confirm();
   }
 
   @override
@@ -65,9 +62,9 @@ class _PreviewPageState extends State<PreviewPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text('There are -1 drivers available.'),
                   ElevatedButton(
                       onPressed: () {
-                        print('confirm');
                         _confirm();
                       },
                       style: ElevatedButton.styleFrom(
