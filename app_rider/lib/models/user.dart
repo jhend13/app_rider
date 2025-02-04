@@ -7,10 +7,13 @@ class User extends ChangeNotifier {
 
   int? get id => _id;
   String? get name => _name;
+  String? get authToken => _authToken;
 
   String? uid;
   String? username;
   String? email;
+  String? _authToken;
+
   bool isVerified = false;
 
   // provided by our rest api server
@@ -31,6 +34,11 @@ class User extends ChangeNotifier {
 
   set id(int? val) {
     _id = val;
+    notifyListeners();
+  }
+
+  set authToken(String? token) {
+    _authToken = token;
     notifyListeners();
   }
 

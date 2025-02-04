@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app_rider/models/user.dart' as user_model;
 
@@ -80,5 +82,9 @@ class AuthService {
 
   static void deleteUser() {
     FirebaseAuth.instance.currentUser?.delete();
+  }
+
+  static onTokenChanges(Function(dynamic) callback) {
+    FirebaseAuth.instance.idTokenChanges().listen(callback);
   }
 }
