@@ -30,6 +30,7 @@ class WebSocketService {
         headers: headers,
       );
       _broadcastStream = _socket!.asBroadcastStream();
+      _isConnecting = false;
 
       _broadcastStream.listen((data) {}, onError: (err) {}, onDone: () {
         _reconnect();
