@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'config/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:app_rider/services/auth.dart';
 import 'package:app_rider/services/api/rest.dart';
 import 'package:app_rider/services/navigation.dart';

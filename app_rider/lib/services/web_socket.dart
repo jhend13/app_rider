@@ -29,7 +29,8 @@ class WebSocketService {
         constants.urlWebSocketEndpoint,
         headers: headers,
       );
-      _broadcastStream = _socket!.asBroadcastStream();
+
+      _broadcastStream = _socket!.asBroadcastStream().map((o) => jsonDecode(o));
       _isConnecting = false;
 
       _broadcastStream.listen((data) {}, onError: (err) {}, onDone: () {

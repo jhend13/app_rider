@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:app_rider/models/user.dart';
 import 'package:app_rider/services/web_socket.dart';
 
@@ -10,7 +9,7 @@ enum WebsocketActionTypes {
   authenticate,
   serviceState,
   routeConfirm,
-  rideConfirm,
+  rideCancel,
   rideStart,
   rideEnd
 }
@@ -36,13 +35,28 @@ class Ride {
   }
 
   void _handleResponse(dynamic data) {
-    print('payload received');
-    print(data);
+    // convert enum string val from server to local enum object
+    WebsocketActionTypes action = WebsocketActionTypes.values.firstWhere(
+        (ev) => ev.name == data['action'],
+        orElse: () =>
+            throw Exception('Invalid WebsocketActionType: ${data['action']}'));
+
+    switch (action) {
+      case WebsocketActionTypes.routeConfirm:
+        print('Server said we\'re good ... do something');
+      default:
+    }
   }
 
   void confirm() {
     _webSocketService
-        .send(WebsocketActionTypes.rideStart, {'user_id': user.id});
+        .send(WebsocketActionTypes.routeConfirm, {'user_id': user.id});
+  }
+
+  void cancel() {
+    print('canceling');
+    _webSocketService
+        .send(WebsocketActionTypes.rideCancel, {'user_id': user.id});
   }
 
   void dispose() {

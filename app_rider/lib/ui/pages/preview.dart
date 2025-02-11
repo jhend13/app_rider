@@ -33,6 +33,12 @@ class _PreviewPageState extends State<PreviewPage> {
     _user = Provider.of<User>(context, listen: false);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _ride?.cancel();
+  }
+
   void _confirm() {
     (_ride ??= Ride(_user, _webSocketService)).confirm();
   }
@@ -62,7 +68,6 @@ class _PreviewPageState extends State<PreviewPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('There are -1 drivers available.'),
                   ElevatedButton(
                       onPressed: () {
                         _confirm();
